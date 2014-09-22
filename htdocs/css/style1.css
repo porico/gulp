@@ -1,0 +1,13 @@
+/* variables */
+h1 {
+  color: #ccc;
+}
+h2 {
+  color: #000;
+}
+div p {
+  font-weight: bold;
+}
+div span {
+  font-weight: normal;
+}
