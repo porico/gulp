@@ -1,5 +1,6 @@
 // plugin
 var gulp = require('gulp'),
+  plumber = require('gulp-plumber'),
   stylus = require('gulp-stylus'),
   csslint = require('gulp-csslint'),
   cssmin = require('gulp-cssmin'),
@@ -40,6 +41,7 @@ gulp.task('csslint', function() {
 });*/
 
 // https://www.npmjs.org/package/gulp-connect
+// gulp-connect は deprecated。新たに作られたgulp-webserverがよい
 /*gulp.task('connect', function() {
   connect.server({
     root: 'app',
@@ -55,31 +57,36 @@ gulp.task('html', function() {
 
 // https://github.com/schickling/gulp-webserver
 gulp.task('webserver', function() {
-  gulp.src(DEST)
+  gulp.src('htdocs')
     .pipe(webserver({
       livereload: true,
-      directoryListing: true,
+      //directoryListing: true, //ディレクトリ一覧を表示するか
       open: true,
       port: 9006
     }));
 });
 
 // https://github.com/floatdrop/gulp-watch/blob/master/docs/readme.md
+gulp.task('build', function() { console.log('working!'); });
 gulp.task('watch', function() {
-  /*gulp.watch(DEST), ['html'];
-  gulp.watch(SRC), ['stylus', 'csslint'];*/
+
+  // simple
+  gulp.watch(SRC, ['stylus', 'csslint']);
 
 /*
+  // callbackを指定したいとき
   gulp.watch(SRC, function(files, cb) {
-    gulp.start(['stylus', 'csslint'], cb);
-  });*/
-
-
+    gulp.start('build', cb);
+  });
+*/
+/*
+  // incremental build
   gulp.src(SRC)
   .pipe(watch(SRC, function(files, cb) {
     return files.pipe(gulp.dest(DEST));
   }))
   .pipe(gulp.dest(DEST));
+*/
 });
 
 

@@ -1,17 +1,19 @@
 /* variables */
 h1 {
-  color: #999;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #000;
+  color: #000;
+  font-size: 30px;
   font-weight: bold;
 }
 h2 {
-  color: #000;
+  color: #ccc;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
 }
 h3 {
   font-weight: bold;
 }
-div p {
-  font-weight: bold;
-}
-div span {
-  font-weight: normal;
+p {
+  font-size: 14px;
 }
