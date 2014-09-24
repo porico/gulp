@@ -7,9 +7,9 @@ h1 {
   font-weight: bold;
 }
 h2 {
-  color: $color2;
+  color: #c00;
   padding-bottom: 5px;
-  border-bottom: 1px solid $color2;
+  border-bottom: 1px solid #c00;
 }
 h3 {
   font-weight: bold;

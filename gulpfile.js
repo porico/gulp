@@ -9,11 +9,15 @@ var gulp = require('gulp'),
   //connect = require('gulp-connect'),
   webserver = require('gulp-webserver'), //gulp-connectの後継
   watch = require('gulp-watch'), //不要？
-  nib = require('nib'); //reset.cssの定義。gulp-stylusと合わせて使う。
+  imagemin = require('gulp-imagemin'),
+  pngcrush = require('imagemin-pngcrush'), //imagemin plugin
+  pngquant = require('imagemin-pngquant'), //imagemin plugin
+  nib = require('nib'); //reset, mixinの定義。gulp-stylusと合わせて使う。
 
 var DEST = './htdocs/';
 var DEST_CSS = './htdocs/**/*.css';
 var SRC = './src/**/*.styl';
+var SRC_IMG = './src/**/*.{gif,jpg,png,svg}';
 
 
 // task config
@@ -34,6 +38,18 @@ gulp.task('csslint', function() {
     .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
     .pipe(csslint())
     .pipe(csslint.reporter());
+});
+
+gulp.task('imagemin', function() {
+  gulp.src(SRC_IMG)
+    .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
+    .pipe(imagemin({
+      use: [pngcrush()]
+    }))
+/*    .pipe(imagemin({
+      use: [pngcrush(), pngquant()] //pngquant()がerrorになる
+    }))*/
+    .pipe(gulp.dest(DEST));
 });
 
 /* minファイルの生成されるタイミングがおかしい・・・ */
@@ -101,4 +117,5 @@ gulp.task('watch', function() {
 gulp.task('default', ['stylus', 'csslint', 'webserver', 'watch']);
 //gulp.task('default', ['stylus', 'csslint', 'cssmin', 'watch']);
 
+gulp.task('build', ['imagemin', 'stylus', 'csslint']);
 
