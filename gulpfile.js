@@ -7,7 +7,10 @@ var gulp = require('gulp'),
   cssmin = require('gulp-cssmin'),
   rename = require('gulp-rename'),
   browserify = require('gulp-browserify'),
-  source = require('vinyl-source-stream'), //gulp-browserifyがblacklist化したためこれを併用する方法を推奨
+  /*
+  browserify = require('browserify'),
+  source = require('vinyl-source-stream'), //gulp-browserifyがblacklist化したため、browserifyとvinyl-source-streamを併用する方法を推奨
+  */
   //connect = require('gulp-connect'),
   webserver = require('gulp-webserver'), //gulp-connectの後継
   watch = require('gulp-watch'), //不要？
@@ -17,10 +20,12 @@ var gulp = require('gulp'),
   nib = require('nib'); //reset, mixinの定義。gulp-stylusと合わせて使う。
 
 var DEST = './htdocs/';
+var DEST_JS = './htdocs/js';
 var DEST_CSS = './htdocs/**/*.css';
 var SRC = './src/**/*.styl';
 var SRC_IMG = './src/**/*.{gif,jpg,png,svg}';
-var SRC_JS = './src/**/.js';
+//var SRC_JS = './src/**/*.js';
+var SRC_JS = './src/**/*.coffee';
 
 
 // task config
@@ -45,26 +50,29 @@ gulp.task('csslint', function() {
 
 gulp.task('browserify', function() {
 /*
-  // blacklist化したので以下のように記述せよ、とあるが、bundle()でエラーになる
+  // gulp-browserifyがblacklist化したので以下のように記述せよ、とある
   // http://qiita.com/mizchi/items/10a8e2b3e6c2c3235e61
-  return browserify(SRC_JS)
-    .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
+  //return browserify(SRC_JS)
+  return browserify('./src/js/_utils.coffee')
     .bundle()
+    .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
     // Pass desired output filename to vinyl-source-stream
     .pipe(source('bundle.js'))
     // Start piping stream to tasks!
     .pipe(gulp.dest(DEST));
 */
-  //
+  //gulp-browserify
   gulp.src(SRC_JS, { read: false })
+    .pipe(plumber())
     .pipe(browserify({
       transform: ['coffeeify'],
-      extensions: ['coffee']
+      extensions: ['.coffee']
       // insertGlobals : true,
       // debug : !gulp.env.production
     }))
+    // .pipe(expand('js'))
     .pipe(rename('app.js'))
-    .pipe(gulp.dest(DEST));
+    .pipe(gulp.dest(DEST_JS));
 
 });
 
