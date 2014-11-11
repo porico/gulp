@@ -5,6 +5,8 @@ var gulp = require('gulp'),
   stylus = require('gulp-stylus'),
   csslint = require('gulp-csslint'),
   cssmin = require('gulp-cssmin'),
+  uncss =  require('gulp-uncss'), //find unused css
+  glob = require('glob'),
   rename = require('gulp-rename'),
   browserify = require('gulp-browserify'),
   /*
@@ -20,6 +22,7 @@ var gulp = require('gulp'),
   nib = require('nib'); //reset, mixinの定義。gulp-stylusと合わせて使う。
 
 var DEST = './htdocs/';
+var DEST_HTML = './htdocs/**/*.html';
 var DEST_JS = './htdocs/js';
 var DEST_CSS = './htdocs/**/*.css';
 var SRC = './src/**/*.styl';
@@ -95,6 +98,25 @@ gulp.task('imagemin', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest(DEST));
 });*/
+
+gulp.task('uncss', function() {
+  gulp.src(DEST_CSS)
+    .pipe(uncss({
+      html: glob.sync(DEST_HTML)
+    }))
+    .pipe(gulp.dest('./out'));
+});
+
+gulp.task('uncss-urls', function() {
+  gulp.src(DEST_CSS)
+    .pipe(uncss({
+      html: [
+      'http://example.com/**/*.html'
+      ]
+    }))
+    .pipe(gulp.dest('./out'));
+});
+
 
 // https://www.npmjs.org/package/gulp-connect
 // gulp-connect は deprecated。新たに作られたgulp-webserverがよい
