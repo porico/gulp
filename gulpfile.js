@@ -1,5 +1,6 @@
 // plugin
 var gulp = require('gulp'),
+  mypRefactoring = require('myplugin-refactoring'), //自作プラグイン
   plumber = require('gulp-plumber'), //あるプラグインでエラーが発生してもほかのプラグインの処理を止めない
   notify = require('gulp-notify'), //error時にメッセージを表示させる
   stylus = require('gulp-stylus'),
@@ -29,7 +30,14 @@ var SRC = './src/**/*.styl';
 var SRC_IMG = './src/**/*.{gif,jpg,png,svg}';
 //var SRC_JS = './src/**/*.js';
 var SRC_JS = './src/**/*.coffee';
+var OUT = './out/';
 
+//自作プラグイン myplugin-refactoring
+gulp.task('mypRefactoring', function() {
+  gulp.src(DEST_CSS)
+    .pipe(mypRefactoring())
+    .pipe(gulp.dest(OUT));
+});
 
 // task config
 gulp.task('stylus', function() {
