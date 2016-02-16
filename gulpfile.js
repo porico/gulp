@@ -7,6 +7,7 @@ var gulp = require('gulp'),
   csslint = require('gulp-csslint'),
   cssmin = require('gulp-cssmin'),
   uncss =  require('gulp-uncss'), //find unused css
+  cssnext =  require('gulp-cssnext'), //PostCSS
   glob = require('glob'),
   rename = require('gulp-rename'),
   browserify = require('gulp-browserify'),
@@ -125,6 +126,11 @@ gulp.task('uncss-urls', function() {
     .pipe(gulp.dest('./out'));
 });
 
+gulp.task('cssnext', function() {
+  return gulp.src('./htdocs/cssnext/**/*.css') // コンパイルするファイルの指定
+  .pipe(cssnext())
+  .pipe(gulp.dest('./htdocs/css')); // コンパイルしたファイルの出力先を指定
+});
 
 // https://www.npmjs.org/package/gulp-connect
 // gulp-connect は deprecated。新たに作られたgulp-webserverがよい
@@ -158,7 +164,7 @@ gulp.task('build', function() { console.log('working!'); });
 gulp.task('watch', function() {
 
   // simple
-  gulp.watch(SRC, ['stylus', 'csslint']);
+  gulp.watch(SRC, ['stylus', 'csslint', 'cssnext']);
 
 /*
   // callbackを指定したいとき
