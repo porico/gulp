@@ -1,0 +1,1 @@
+{"version":3,"sources":["css/style2.styl"],"names":[],"mappings":"AAAA;AAGA;EACC,OAAO,KAAP;;AAGD;EACC,OAAO,KAAP","file":"css/style2.css","sourceRoot":"/source/","sourcesContent":["/*! style2 */\r\n$color1 = #ccc;\r\n\r\n.style2 {\r\n\tcolor: $color1;\r\n}\r\n\r\n.style3 {\r\n\tcolor: $color1;\r\n}\r\n\r\n"]}

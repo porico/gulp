@@ -3,11 +3,13 @@ var gulp = require('gulp'),
   mypRefactoring = require('myplugin-refactoring'), //自作プラグイン
   plumber = require('gulp-plumber'), //あるプラグインでエラーが発生してもほかのプラグインの処理を止めない
   notify = require('gulp-notify'), //error時にメッセージを表示させる
+  sourcemaps = require('gulp-sourcemaps'),
   stylus = require('gulp-stylus'),
   csslint = require('gulp-csslint'),
   cssmin = require('gulp-cssmin'),
   uncss =  require('gulp-uncss'), //find unused css
   cssnext =  require('gulp-cssnext'), //PostCSS
+  autoprefixer =  require('gulp-autoprefixer'), //PostCSS
   glob = require('glob'),
   rename = require('gulp-rename'),
   browserify = require('gulp-browserify'),
@@ -46,10 +48,10 @@ gulp.task('stylus', function() {
     .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
     //.pipe(plumber())
     // .pipe(stylus())
-    .pipe(stylus({
-      use: nib(),
-      compress: false
-    }))
+    .pipe(sourcemaps.init())
+    .pipe(stylus({ use: nib(), compress: false }))
+    .pipe(sourcemaps.write('.'))
+    //.pipe(autoprefixer({browsers: ['last 3 versions', 'ie 8']}))
     .pipe(gulp.dest(DEST));
 });
 
